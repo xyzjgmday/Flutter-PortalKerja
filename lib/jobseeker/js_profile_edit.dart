@@ -9,6 +9,8 @@ import '../widgets/loading.dart';
 import 'js_profile.dart';
 
 class JsProfileEdit extends StatefulWidget {
+  const JsProfileEdit({Key? key}) : super(key: key);
+
   @override
   _JsProfileEditState createState() => _JsProfileEditState();
 }
@@ -34,7 +36,7 @@ class _JsProfileEditState extends State<JsProfileEdit> {
     return Scaffold(
       appBar: AppBar(),
       body: isloading
-          ? LoadingLayout()
+          ? const LoadingLayout()
           : ListView(
               children: <Widget>[
                 //
@@ -203,7 +205,7 @@ class _JsProfileEditState extends State<JsProfileEdit> {
         Navigator.of(context).popUntil((_) => count++ >= 2);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => JsProfile()),
+          MaterialPageRoute(builder: (context) => const JsProfile()),
         );
       }
     }

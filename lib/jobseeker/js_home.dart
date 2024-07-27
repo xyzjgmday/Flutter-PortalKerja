@@ -11,13 +11,15 @@ import 'package:online_job_portal/splash_screen.dart';
 import 'js_profile.dart';
 
 class JHomeScreen extends StatefulWidget {
+  const JHomeScreen({Key? key}) : super(key: key);
+
   @override
   _JHomeScreenState createState() => _JHomeScreenState();
 }
 
 class _JHomeScreenState extends State<JHomeScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
   bool isloading = false;
   List<JobPost> jobposts = <JobPost>[];
   final searchController = TextEditingController();
@@ -32,10 +34,10 @@ class _JHomeScreenState extends State<JHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Online Job Portal'),
+        title: const Text('Portal Kerja'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.face,
                 color: Colors.white,
               ),
@@ -43,7 +45,7 @@ class _JHomeScreenState extends State<JHomeScreen> {
                 _viewProfile(context);
               }),
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.power_settings_new,
                 color: Colors.white,
               ),
@@ -52,49 +54,79 @@ class _JHomeScreenState extends State<JHomeScreen> {
               }),
         ],
       ),
-      body: Container(
-        child: isloading
-            ? LoadingLayout()
-            : RefreshIndicator(
-                key: _refreshIndicatorKey,
-                onRefresh: _refresh,
-                child: Container(
-                    color: Color(0xfff2f3f5),
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: TextField(
-                            controller: searchController,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.grey[300],
-                              hintText: 'Search for jobs...',
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              suffixIcon: IconButton(
-                                onPressed: () => _filterData(),
-                                icon: Icon(Icons.search),
+      body: Stack(
+        children: <Widget>[
+          // Background gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blueAccent, Colors.deepPurpleAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+            ),
+          ),
+          // Overlay with gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black54],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          ),
+          // Main content
+          Container(
+            child: isloading
+                ? const LoadingLayout()
+                : RefreshIndicator(
+                    key: _refreshIndicatorKey,
+                    onRefresh: _refresh,
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: TextField(
+                              controller: searchController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey[300],
+                                hintText: 'Search for jobs...',
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.transparent),
+                                    borderRadius: BorderRadius.circular(20.0)),
+                                suffixIcon: IconButton(
+                                  onPressed: () => _filterData(),
+                                  icon: const Icon(Icons.search),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: jobposts.length,
-                            itemBuilder: _buildItemsForListView,
+                          Expanded(
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: jobposts.length,
+                              itemBuilder: _buildItemsForListView,
+                            ),
                           ),
-                        ),
-                      ],
-                    )),
-              ),
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }
@@ -107,7 +139,7 @@ class _JHomeScreenState extends State<JHomeScreen> {
         // jobposts.clear();
         // jobposts = posts;
         List<JobPost> searchedjobposts = <JobPost>[];
-        posts.forEach((post) {
+        for (var post in posts) {
           //jobtitle
           if (post.jobtitle.toLowerCase().contains(searchtext.toLowerCase())) {
             searchedjobposts.add(post);
@@ -134,7 +166,7 @@ class _JHomeScreenState extends State<JHomeScreen> {
               .contains(searchtext.toLowerCase())) {
             searchedjobposts.add(post);
           }
-        });
+        }
         setState(() {
           jobposts.clear();
           jobposts = searchedjobposts;
@@ -150,14 +182,14 @@ class _JHomeScreenState extends State<JHomeScreen> {
     prefs.clear();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => SplashScreen()),
+      MaterialPageRoute(builder: (context) => const SplashScreen()),
     );
   }
 
   void _viewProfile(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => JsProfile()),
+      MaterialPageRoute(builder: (context) => const JsProfile()),
     );
   }
 
@@ -291,7 +323,7 @@ class _JHomeScreenState extends State<JHomeScreen> {
       var responseJson = json.decode(response.body);
       print(responseJson['datas']);
       final items =
-          (responseJson["datas"] as List).map((i) => new JobPost.fromJson(i));
+          (responseJson["datas"] as List).map((i) => JobPost.fromJson(i));
       return items.toList();
     } else {
       // If the server did not return a 200 OK response,
@@ -300,7 +332,7 @@ class _JHomeScreenState extends State<JHomeScreen> {
     }
   }
 
-  Future<Null> _refresh() {
+  Future<void> _refresh() {
     setState(() {
       jobposts.clear();
     });

@@ -13,7 +13,7 @@ import '../widgets/loading.dart';
 class EmSingleJobPost extends StatefulWidget {
   final JobPost jobpost;
 
-  EmSingleJobPost({Key? key, required this.jobpost}) : super(key: key);
+  const EmSingleJobPost({Key? key, required this.jobpost}) : super(key: key);
 
   @override
   _EmSingleJobPostState createState() => _EmSingleJobPostState();
@@ -21,7 +21,7 @@ class EmSingleJobPost extends StatefulWidget {
 
 class _EmSingleJobPostState extends State<EmSingleJobPost> {
   //variables
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final Color fieldColor = Color(0xffedeef3);
   bool isloading = false;
   List<TableRow> tablerows = [];
@@ -30,7 +30,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Job Post'),
+        title: const Text('Job Post'),
         actions: <Widget>[
           // IconButton(
           //     tooltip: 'Edit',
@@ -49,7 +49,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
           //     }),
           IconButton(
               tooltip: 'Edit',
-              icon: Icon(
+              icon: const Icon(
                 Icons.edit,
                 color: Colors.white,
               ),
@@ -64,7 +64,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
               }),
           IconButton(
               tooltip: 'Delete',
-              icon: Icon(
+              icon: const Icon(
                 Icons.delete,
                 color: Colors.white,
               ),
@@ -74,7 +74,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
         ],
       ),
       body: isloading
-          ? LoadingLayout()
+          ? const LoadingLayout()
           : SingleChildScrollView(
               child: Container(
                 height: MediaQuery.of(context).size.height,
@@ -84,35 +84,35 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     ListTile(
-                      title: Text('Job Title'),
+                      title: const Text('Job Title'),
                       subtitle: Text(widget.jobpost.jobtitle),
                     ),
                     ListTile(
-                      title: Text('Job Type'),
+                      title: const Text('Job Type'),
                       subtitle: Text(widget.jobpost.jobtype),
                     ),
                     ListTile(
-                      title: Text('Job Designation'),
+                      title: const Text('Job Designation'),
                       subtitle: Text(widget.jobpost.designation),
                     ),
                     ListTile(
-                      title: Text('Qualification'),
+                      title: const Text('Qualification'),
                       subtitle: Text(widget.jobpost.qualification),
                     ),
                     ListTile(
-                      title: Text('Job Specialization'),
+                      title: const Text('Job Specialization'),
                       subtitle: Text(widget.jobpost.specialization),
                     ),
                     ListTile(
-                      title: Text('Skills'),
+                      title: const Text('Skills'),
                       subtitle: Text(widget.jobpost.skills),
                     ),
                     ListTile(
-                      title: Text('Deadline'),
+                      title: const Text('Deadline'),
                       subtitle: Text(widget.jobpost.lastdate),
                     ),
                     ListTile(
-                      title: Text('Job Description'),
+                      title: const Text('Job Description'),
                       subtitle: Text(widget.jobpost.desc),
                     ),
                     ListTile(
@@ -139,9 +139,9 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return const AlertDialog(
           title: Text('Remove Job Post ?'),
-          content: const Text('This Post will no longer be available.'),
+          content: Text('This Post will no longer be available.'),
           actions: <Widget>[
             // FlatButton(
             //   textColor: Colors.black,
@@ -191,7 +191,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
         Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EHomeScreen()),
+          MaterialPageRoute(builder: (context) => const EHomeScreen()),
         );
       }
     } else {
@@ -210,17 +210,17 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
     tablerows.add(TableRow(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('Fullname'),
+        child: const Text('Fullname'),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('Phone no'),
+        child: const Text('Phone no'),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('Address'),
+        child: const Text('Address'),
       ),
-      Padding(padding: const EdgeInsets.all(8.0), child: Text('CV')),
+      Padding(padding: const EdgeInsets.all(8.0), child: const Text('CV')),
     ]));
 
     _fetchAppliedJobseekers();
@@ -251,7 +251,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
         // appliedForJob = data['datas']['applied'];
 
         List datas = data['datas'];
-        datas.forEach((data) {
+        for (var data in datas) {
           tablerows.add(TableRow(children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -268,7 +268,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: data['cv'] == 'no'
-                  ? Text('No CV')
+                  ? const Text('No CV')
                   : MaterialButton(
                       onPressed: () {
                         _viewCV(data['cv']);
@@ -284,7 +284,7 @@ class _EmSingleJobPostState extends State<EmSingleJobPost> {
                     ),
             ),
           ]));
-        });
+        }
 
         setState(() {
           isloading = false;

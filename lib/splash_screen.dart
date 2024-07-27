@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:online_job_portal/helpers/api_helper.dart';
 //screens
 import 'employeer/em_home.dart';
 import 'jobseeker/js_home.dart';
 import 'auth/login.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -22,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(18.0),
-            child: Image(image: AssetImage('assets/images/img_2.png')),
+            child: const Image(image: AssetImage('assets/images/img_2.png')),
           ),
         ),
       ),
@@ -50,14 +49,14 @@ class _SplashScreenState extends State<SplashScreen> {
         // Redirect to login
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
         );
       }
     } else {
       // Redirect to login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     }
   }
@@ -69,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Skip verification check and navigate directly to jobseeker home screen
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => JHomeScreen()),
+      MaterialPageRoute(builder: (context) => const JHomeScreen()),
     );
   }
 
@@ -80,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Skip verification check and navigate directly to employer home screen
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => EHomeScreen()),
+      MaterialPageRoute(builder: (context) => const EHomeScreen()),
     );
   }
 }

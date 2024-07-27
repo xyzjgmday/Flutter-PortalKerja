@@ -13,6 +13,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../widgets/loading.dart';
 
 class JsProfile extends StatefulWidget {
+  const JsProfile({Key? key}) : super(key: key);
+
   @override
   _JsProfileState createState() => _JsProfileState();
 }
@@ -20,11 +22,11 @@ class JsProfile extends StatefulWidget {
 class _JsProfileState extends State<JsProfile> {
   List profiledata = [];
   bool isloading = false;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     Widget cv = profiledata == null && profiledata[0]["cv"] == 'no'
-        ? Text('no cv uploaded')
+        ? const Text('no cv uploaded')
         : MaterialButton(
             onPressed: () {
               _viewCV();
@@ -45,22 +47,22 @@ class _JsProfileState extends State<JsProfile> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => JsProfileEdit()),
+                  MaterialPageRoute(builder: (context) => const JsProfileEdit()),
                 );
               })
         ],
       ),
       body: isloading
-          ? LoadingLayout()
-          : profiledata.length == 0
-              ? Text('Opps!')
+          ? const LoadingLayout()
+          : profiledata.isEmpty
+              ? const Text('Opps!')
               : SingleChildScrollView(
                   child: Container(
                     height: MediaQuery.of(context).size.height,
@@ -71,35 +73,35 @@ class _JsProfileState extends State<JsProfile> {
                       children: <Widget>[
                         //Email
                         ListTile(
-                          title: Text('Email'),
+                          title: const Text('Email'),
                           subtitle: profiledata[0]["email"] != null
                               ? Text(profiledata[0]["email"])
-                              : Text('-'),
+                              : const Text('-'),
                         ),
                         //fullname
                         ListTile(
-                          title: Text('Fullname'),
+                          title: const Text('Fullname'),
                           subtitle: profiledata[0]["fullname"] != null
                               ? Text(profiledata[0]["fullname"])
-                              : Text('-'),
+                              : const Text('-'),
                         ),
                         //phone_no
                         ListTile(
-                          title: Text('Phone'),
+                          title: const Text('Phone'),
                           subtitle: profiledata[0]["phone_no"] != null
                               ? Text(profiledata[0]["phone_no"])
-                              : Text('-'),
+                              : const Text('-'),
                         ),
                         //address
                         ListTile(
-                          title: Text('Address'),
+                          title: const Text('Address'),
                           subtitle: profiledata[0]["address"] != null
                               ? Text(profiledata[0]["address"])
-                              : Text('-'),
+                              : const Text('-'),
                         ),
                         //address
                         ListTile(
-                          title: Text('CV'),
+                          title: const Text('CV'),
                           subtitle: cv,
                           trailing: MaterialButton(
                             onPressed: () {
@@ -173,8 +175,8 @@ class _JsProfileState extends State<JsProfile> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userid = prefs.getInt('user_id');
 
-      Dio dio = new Dio();
-      FormData formdata = new FormData.fromMap({
+      Dio dio = Dio();
+      FormData formdata = FormData.fromMap({
         'user_id': userid.toString(),
         //  'cv': file,
         'cv': await MultipartFile.fromFile(file.path.toString(),

@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 //screens
-import 'package:online_job_portal/splash_screen.dart';
 import 'login.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -32,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final eCompanyPhonenoController = TextEditingController();
   final eCompanyAddressController = TextEditingController();
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {
@@ -55,92 +56,113 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              SizedBox(
-                height: 80.0,
+      body: Stack(
+        children: <Widget>[
+          // Background gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blueAccent, Colors.deepPurpleAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
               ),
-              //brandname
-              Text(
-                'Online Job Portal',
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: brandColor,
-                    fontWeight: FontWeight.bold),
+            ),
+          ),
+          // Overlay with gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black54],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
               ),
-              SizedBox(
-                height: 50.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            ),
+          ),
+          // Main content
+          SingleChildScrollView(
+            child: Container(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  MaterialButton(
-                    minWidth: 150.0,
-                    onPressed: () {
-                      _switchForm('j');
-                    },
-                    color: Theme.of(context).primaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        'Jobseeker',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
+                  SizedBox(height: 80.0),
+                  // Brand name
+                  Text(
+                    'Portal Kerja',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: brandColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 50.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 150.0,
+                        onPressed: () {
+                          _switchForm('j');
+                        },
+                        color: Theme.of(context).primaryColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            'Jobseeker',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  MaterialButton(
-                    minWidth: 150.0,
-                    onPressed: () {
-                      _switchForm('e');
-                    },
-                    color: Theme.of(context).hintColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                        'Employeer',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
+                      MaterialButton(
+                        minWidth: 150.0,
+                        onPressed: () {
+                          _switchForm('e');
+                        },
+                        color: Theme.of(context).hintColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            'Employeer',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                            ),
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 40.0),
+                  jobseeker
+                      ? _buildJobseekerForm(context)
+                      : _buildEmployeerForm(context),
+                  SizedBox(height: 40.0),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    child: Text(
+                      "Already have an account? Login",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.blueGrey,
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 40.0,
-              ),
-              jobseeker
-                  ? _buildJobseekerForm(context)
-                  : _buildEmployeerForm(context),
-              SizedBox(
-                height: 40.0,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                },
-                child: Text(
-                  "Already have account ? Login",
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.blueGrey,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -179,10 +201,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-          //phoneo
+          SizedBox(height: 30.0),
+          //phone number
           TextField(
             controller: jPhonenoController,
             decoration: InputDecoration(
@@ -197,9 +217,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
+          SizedBox(height: 30.0),
           //address
           TextField(
             controller: jAddressController,
@@ -215,10 +233,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-
+          SizedBox(height: 30.0),
           //email
           TextField(
             controller: jEmailController,
@@ -234,10 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-
+          SizedBox(height: 30.0),
           //password
           TextField(
             controller: jPasswordController,
@@ -254,10 +266,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 45.0,
-          ),
-
+          SizedBox(height: 45.0),
           //button
           MaterialButton(
             minWidth: double.infinity,
@@ -305,10 +314,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-
+          SizedBox(height: 30.0),
           //company phone no
           TextField(
             controller: eCompanyPhonenoController,
@@ -324,9 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
+          SizedBox(height: 30.0),
           //company address
           TextField(
             controller: eCompanyAddressController,
@@ -342,10 +346,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-
+          SizedBox(height: 30.0),
           //email
           TextField(
             controller: eEmailController,
@@ -361,10 +362,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 30.0,
-          ),
-
+          SizedBox(height: 30.0),
           //password
           TextField(
             controller: ePasswordController,
@@ -381,10 +379,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   borderRadius: BorderRadius.circular(20.0)),
             ),
           ),
-          SizedBox(
-            height: 45.0,
-          ),
-
+          SizedBox(height: 45.0),
           //button
           MaterialButton(
             minWidth: double.infinity,
@@ -411,131 +406,139 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _registerJobseeker(BuildContext context) async {
-    var fullname = jFullnameController.text;
-    var phone = jPhonenoController.text;
-    var address = jAddressController.text;
-    var email = jEmailController.text;
-    var password = jPasswordController.text;
-    if (fullname != '' &&
-        phone != '' &&
-        address != '' &&
-        email != '' &&
-        password != '') {
-      //registering state
-      setState(() {
-        registering = true;
-      });
-      print("Registering Jobseeker");
-      var url = ApiHelper.registerJobseeker;
-      await http.post(Uri.parse(url), body: {
-        'email': email,
-        'password': password,
-        'fullname': fullname,
-        'phone_no': phone,
-        'address': address,
-      }).then((response) async {
-        print(response.statusCode);
-        if (response.statusCode == 200) {
-          print('Response body: ${response.body}');
-          var data = json.decode(response.body);
-          print('Response body: $data');
-          if (data['status'] == 200) {
-            //store value
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setInt('user_id', data['user']['id']);
-            prefs.setString('type', data['user']['type']);
+  var fullname = jFullnameController.text;
+  var phone = jPhonenoController.text;
+  var address = jAddressController.text;
+  var email = jEmailController.text;
+  var password = jPasswordController.text;
+  if (fullname != '' &&
+      phone != '' &&
+      address != '' &&
+      email != '' &&
+      password != '') {
+    //registering state
+    setState(() {
+      registering = true;
+    });
+    print("Registering Jobseeker");
+    var url = ApiHelper.registerJobseeker;
+    await http.post(Uri.parse(url), body: {
+      'email': email,
+      'password': password,
+      'fullname': fullname,
+      'phone_no': phone,
+      'address': address,
+    }).then((response) async {
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('Response body: ${response.body}');
+        var data = json.decode(response.body);
+        print('Response body: $data');
+        if (data['status'] == 200) {
+          //store value
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setInt('user_id', data['user']['id']);
+          prefs.setString('type', data['user']['type']);
 
-            Navigator.of(context).popUntil((route) => route.isFirst);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => SplashScreen()),
-            );
-          } else {
-            //show snackbar
-            const snackBar = SnackBar(
-              content: Text("Some error occured"),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
+          // Redirect to login screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+
         } else {
-          throw Exception(
-              "Request to $url failed with status ${response.statusCode}: ${response.body}");
+          //show snackbar
+          const snackBar = SnackBar(
+            content: Text("Some error occured"),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
-      });
-    } else {
-      //show snackbar
-      const snackBar = SnackBar(
-        content: Text("Empty Fields!"),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  }
-
-  Future<void> _registerEmployeer(BuildContext context) async {
-    var companyname = eCompanyNameController.text;
-    var companyphone = eCompanyPhonenoController.text;
-    var companyaddress = eCompanyAddressController.text;
-    var email = eEmailController.text;
-    var password = ePasswordController.text;
-    if (companyname != '' &&
-        companyphone != '' &&
-        companyaddress != '' &&
-        email != '' &&
-        password != '') {
-      //registering state
-      setState(() {
-        registering = true;
-      });
-      print("Registering Employeer");
-      var url = ApiHelper.registerEmployeer;
-      await http.post(Uri.parse(url), body: {
-        'email': email,
-        'password': password,
-        'company_name': companyname,
-        'company_phone': companyphone,
-        'company_address': companyaddress,
-      }).then((response) async {
-        if (response.statusCode == 200) {
-          print('Response body: ${response.body}');
-          var data = json.decode(response.body);
-          print('Response body: $data');
-          if (data['status'] == 200) {
-            //store value
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setInt('user_id', data['user']['id']);
-            prefs.setString('type', data['user']['type']);
-
-            if (mounted)
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => SplashScreen()),
-            );
-          } else {
-            //show snackbar
-            const snackBar = SnackBar(
-              content: Text("Some error occured"),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            setState(() {
-              registering = false;
-            });
-          }
-        }
-      });
-    } else {
-      //show snackbar
-      const snackBar = SnackBar(
-        content: Text("Empty Fields!"),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        throw Exception(
+            "Request to $url failed with status ${response.statusCode}: ${response.body}");
+      }
       setState(() {
         registering = false;
       });
-    }
-
+    });
+  } else {
+    //show snackbar
+    const snackBar = SnackBar(
+      content: Text("Empty Fields!"),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
     setState(() {
       registering = false;
     });
   }
+}
+
+Future<void> _registerEmployeer(BuildContext context) async {
+  var companyname = eCompanyNameController.text;
+  var companyphone = eCompanyPhonenoController.text;
+  var companyaddress = eCompanyAddressController.text;
+  var email = eEmailController.text;
+  var password = ePasswordController.text;
+  if (companyname != '' &&
+      companyphone != '' &&
+      companyaddress != '' &&
+      email != '' &&
+      password != '') {
+    //registering state
+    setState(() {
+      registering = true;
+    });
+    print("Registering Employeer");
+    var url = ApiHelper.registerEmployeer;
+    await http.post(Uri.parse(url), body: {
+      'email': email,
+      'password': password,
+      'company_name': companyname,
+      'company_phone': companyphone,
+      'company_address': companyaddress,
+    }).then((response) async {
+      if (response.statusCode == 200) {
+        print('Response body: ${response.body}');
+        var data = json.decode(response.body);
+        print('Response body: $data');
+        if (data['status'] == 200) {
+          //store value
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setInt('user_id', data['user']['id']);
+          prefs.setString('type', data['user']['type']);
+
+          // Redirect to login screen
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+            (Route<dynamic> route) => false,
+          );
+        } else {
+          //show snackbar
+          const snackBar = SnackBar(
+            content: Text("Some error occured"),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          setState(() {
+            registering = false;
+          });
+        }
+      }
+    });
+  } else {
+    //show snackbar
+    const snackBar = SnackBar(
+      content: Text("Empty Fields!"),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    setState(() {
+      registering = false;
+    });
+  }
+
+  setState(() {
+    registering = false;
+  });
+}
+
 }

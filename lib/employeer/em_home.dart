@@ -13,13 +13,15 @@ import 'em_addJobpost.dart';
 import 'em_singlejoppost.dart';
 
 class EHomeScreen extends StatefulWidget {
+  const EHomeScreen({Key? key}) : super(key: key);
+
   @override
   _EHomeScreenState createState() => _EHomeScreenState();
 }
 
 class _EHomeScreenState extends State<EHomeScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
 
   bool isloading = false;
   List<JobPost> jobposts = <JobPost>[];
@@ -29,10 +31,10 @@ class _EHomeScreenState extends State<EHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Online Job Portal'),
+        title: const Text('Portal Kerja'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.face,
                 color: Colors.white,
               ),
@@ -40,7 +42,7 @@ class _EHomeScreenState extends State<EHomeScreen> {
                 _viewProfile(context);
               }),
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.power_settings_new,
                 color: Colors.white,
               ),
@@ -49,34 +51,65 @@ class _EHomeScreenState extends State<EHomeScreen> {
               }),
         ],
       ),
-      body: isloading
-          ? LoadingLayout()
-          : RefreshIndicator(
-              key: _refreshIndicatorKey,
-              onRefresh: _refresh,
-              child: jobposts.length == 0
-                  ? Center(
-                      child: Text(
-                      'No Posts !',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                    ))
-                  : Container(
-                      color: Color(0xfff2f3f5),
-                      child: ListView.builder(
-                        itemCount: jobposts.length,
-                        itemBuilder: _buildItemsForListView,
-                      )),
+      body: Stack(
+        children: <Widget>[
+          // Background gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.blueAccent, Colors.deepPurpleAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
             ),
+          ),
+          // Overlay with gradient
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black54],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          ),
+          // Main content
+          isloading
+              ? const LoadingLayout()
+              : RefreshIndicator(
+                  key: _refreshIndicatorKey,
+                  onRefresh: _refresh,
+                  child: jobposts.isEmpty
+                      ? Center(
+                          child: Text(
+                          'No Posts !',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            color: Colors.white, // Ensure text is visible
+                          ),
+                        ))
+                      : Container(
+                          color: Colors.transparent,
+                          child: ListView.builder(
+                            itemCount: jobposts.length,
+                            itemBuilder: _buildItemsForListView,
+                          ),
+                        ),
+                ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EmAddJobPost()),
+            MaterialPageRoute(builder: (context) => const EmAddJobPost()),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -189,14 +222,14 @@ class _EHomeScreenState extends State<EHomeScreen> {
     prefs.clear();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => SplashScreen()),
+      MaterialPageRoute(builder: (context) => const SplashScreen()),
     );
   }
 
   void _viewProfile(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => EmProfile()),
+      MaterialPageRoute(builder: (context) => const EmProfile()),
     );
   }
 
@@ -233,7 +266,7 @@ class _EHomeScreenState extends State<EHomeScreen> {
       var responseJson = json.decode(response.body);
       print(responseJson['datas']);
       final items =
-          (responseJson["datas"] as List).map((i) => new JobPost.fromJson(i));
+          (responseJson["datas"] as List).map((i) => JobPost.fromJson(i));
       return items.toList();
     } else {
       // If the server did not return a 200 OK response,
@@ -243,7 +276,7 @@ class _EHomeScreenState extends State<EHomeScreen> {
     }
   }
 
-  Future<Null> _refresh() {
+  Future<void> _refresh() {
     setState(() {
       jobposts.clear();
     });

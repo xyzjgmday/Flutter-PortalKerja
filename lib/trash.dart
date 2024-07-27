@@ -3,14 +3,16 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 
 class TrackvehicleScreen extends StatefulWidget {
+  const TrackvehicleScreen({Key? key}) : super(key: key);
+
   @override
   _TrackvehicleScreenState createState() => _TrackvehicleScreenState();
 }
 
 class _TrackvehicleScreenState extends State<TrackvehicleScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
@@ -19,7 +21,7 @@ class _TrackvehicleScreenState extends State<TrackvehicleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Track Vehicle'),
+        title: const Text('Track Vehicle'),
       ),
       body: GoogleMap(
         mapType: MapType.hybrid,
@@ -30,8 +32,8 @@ class _TrackvehicleScreenState extends State<TrackvehicleScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _trackVehicle,
-        label: Text('Track!'),
-        icon: Icon(Icons.location_searching),
+        label: const Text('Track!'),
+        icon: const Icon(Icons.location_searching),
       ),
     );
   }
@@ -40,7 +42,7 @@ class _TrackvehicleScreenState extends State<TrackvehicleScreen> {
     final GoogleMapController controller = await _controller.future;
 
     //New co-ordinates
-    CameraPosition _kLake = CameraPosition(
+    CameraPosition _kLake = const CameraPosition(
         bearing: 192.8334901395799,
         target: LatLng(37.43296265331129, -122.08832357078792),
         tilt: 59.440717697143555,

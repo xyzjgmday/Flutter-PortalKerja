@@ -12,7 +12,7 @@ import 'em_home.dart';
 class EmEditJopPost extends StatefulWidget {
   final JobPost jobpost;
 
-  EmEditJopPost({Key? key, required this.jobpost}) : super(key: key);
+  const EmEditJopPost({Key? key, required this.jobpost}) : super(key: key);
 
   @override
   _EmEditJopPostState createState() => _EmEditJopPostState();
@@ -20,7 +20,7 @@ class EmEditJopPost extends StatefulWidget {
 
 class _EmEditJopPostState extends State<EmEditJopPost> {
   //variables
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final Color fieldColor = Color(0xffedeef3);
   bool isloading = false;
   final jobtitle = TextEditingController();
@@ -52,209 +52,237 @@ class _EmEditJopPostState extends State<EmEditJopPost> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Edit Job Post'),
+        title: const Text('Edit Job Post'),
       ),
       body: isloading
-          ? LoadingLayout()
+          ? const LoadingLayout()
           : SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //Job Title
-                      TextField(
-                        controller: jobtitle,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Job Title',
-                          labelText: 'Job Title',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
+              child: Stack(
+                children: <Widget>[
+                  // Background gradient
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.blueAccent, Colors.deepPurpleAccent],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
                       ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //Job type
-                      TextField(
-                        controller: jobtype,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Job Type',
-                          labelText: 'Job Type',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
+                    ),
+                  ),
+                  // Overlay with gradient
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.transparent, Colors.black54],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
                         ),
                       ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //designation
-                      TextField(
-                        controller: designation,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Job Designation',
-                          labelText: 'Job Designation',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //Qualification
-                      TextField(
-                        controller: qualification,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Qualification',
-                          labelText: 'Qualification',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //Specialization
-                      TextField(
-                        controller: specialization,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Job Specialization',
-                          labelText: 'Job Specialization',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //Skills
-                      TextField(
-                        controller: skills,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Skills',
-                          labelText: 'Skills',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //last date of application
-                      GestureDetector(
-                        onTap: () => _picDate(context),
-                        child: AbsorbPointer(
-                          child: TextField(
-                            controller: lastdate,
+                    ),
+                  ),
+                  // Main content
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //Job Title
+                          TextField(
+                            controller: jobtitle,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: fieldColor,
-                              hintText: 'Deadline',
-                              labelText: 'Deadline',
-                              prefixIcon: Icon(
-                                Icons.dialpad,
-                              ),
+                              hintText: 'Job Title',
+                              labelText: 'Job Title',
                               enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
+                                  borderSide: BorderSide(color: Colors.transparent),
                                   borderRadius: BorderRadius.circular(0.0)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
+                                  borderSide: BorderSide(color: Colors.transparent),
                                   borderRadius: BorderRadius.circular(0.0)),
                             ),
                           ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //job desc
-                      TextField(
-                        controller: desc,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: fieldColor,
-                          hintText: 'Job Description',
-                          labelText: 'Job Description',
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(0.0)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      //button
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          onPressed: () {
-                            if (!isloading) _updateJobPost();
-                          },
-                          color: Theme.of(context).primaryColor,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Text(
-                              !isloading ? 'Update Post' : 'Please Wait..',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //Job type
+                          TextField(
+                            controller: jobtype,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: fieldColor,
+                              hintText: 'Job Type',
+                              labelText: 'Job Type',
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //designation
+                          TextField(
+                            controller: designation,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: fieldColor,
+                              hintText: 'Job Designation',
+                              labelText: 'Job Designation',
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //Qualification
+                          TextField(
+                            controller: qualification,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: fieldColor,
+                              hintText: 'Qualification',
+                              labelText: 'Qualification',
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //Specialization
+                          TextField(
+                            controller: specialization,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: fieldColor,
+                              hintText: 'Job Specialization',
+                              labelText: 'Job Specialization',
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //Skills
+                          TextField(
+                            controller: skills,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: fieldColor,
+                              hintText: 'Skills',
+                              labelText: 'Skills',
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //last date of application
+                          GestureDetector(
+                            onTap: () => _picDate(context),
+                            child: AbsorbPointer(
+                              child: TextField(
+                                controller: lastdate,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: fieldColor,
+                                  hintText: 'Deadline',
+                                  labelText: 'Deadline',
+                                  prefixIcon: const Icon(
+                                    Icons.dialpad,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.transparent),
+                                      borderRadius: BorderRadius.circular(0.0)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.transparent),
+                                      borderRadius: BorderRadius.circular(0.0)),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      )
-                    ],
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //job desc
+                          TextField(
+                            controller: desc,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: fieldColor,
+                              hintText: 'Job Description',
+                              labelText: 'Job Description',
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(0.0)),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30.0,
+                          ),
+                          //button
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: MaterialButton(
+                              minWidth: double.infinity,
+                              onPressed: () {
+                                if (!isloading) _updateJobPost();
+                              },
+                              color: Theme.of(context).primaryColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text(
+                                  !isloading ? 'Update Post' : 'Please Wait..',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
     );
@@ -321,7 +349,7 @@ class _EmEditJopPostState extends State<EmEditJopPost> {
         Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => EHomeScreen()),
+          MaterialPageRoute(builder: (context) => const EHomeScreen()),
         );
       }
     } else {

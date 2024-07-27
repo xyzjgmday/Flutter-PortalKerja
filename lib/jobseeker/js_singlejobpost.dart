@@ -10,7 +10,7 @@ import '../widgets/loading.dart';
 class JsSingleJobPost extends StatefulWidget {
   final JobPost jobpost;
 
-  JsSingleJobPost({Key? key,  required this.jobpost}) : super(key: key);
+  const JsSingleJobPost({Key? key,  required this.jobpost}) : super(key: key);
 
   @override
   _JsSingleJobPostState createState() => _JsSingleJobPostState();
@@ -18,7 +18,7 @@ class JsSingleJobPost extends StatefulWidget {
 
 class _JsSingleJobPostState extends State<JsSingleJobPost> {
   //variables
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isloading = false;
   bool appliedForJob = false;
   @override
@@ -29,7 +29,7 @@ class _JsSingleJobPostState extends State<JsSingleJobPost> {
         title: Text(widget.jobpost.jobtitle),
       ),
       body: isloading
-          ? LoadingLayout()
+          ? const LoadingLayout()
           : SingleChildScrollView(
               child: Container(
                 height: MediaQuery.of(context).size.height,
@@ -39,35 +39,35 @@ class _JsSingleJobPostState extends State<JsSingleJobPost> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     ListTile(
-                      title: Text('Job Title'),
+                      title: const Text('Job Title'),
                       subtitle: Text(widget.jobpost.jobtitle),
                     ),
                     ListTile(
-                      title: Text('Job Type'),
+                      title: const Text('Job Type'),
                       subtitle: Text(widget.jobpost.jobtype),
                     ),
                     ListTile(
-                      title: Text('Job Designation'),
+                      title: const Text('Job Designation'),
                       subtitle: Text(widget.jobpost.designation),
                     ),
                     ListTile(
-                      title: Text('Qualification'),
+                      title: const Text('Qualification'),
                       subtitle: Text(widget.jobpost.qualification),
                     ),
                     ListTile(
-                      title: Text('Job Specialization'),
+                      title: const Text('Job Specialization'),
                       subtitle: Text(widget.jobpost.specialization),
                     ),
                     ListTile(
-                      title: Text('Skills'),
+                      title: const Text('Skills'),
                       subtitle: Text(widget.jobpost.skills),
                     ),
                     ListTile(
-                      title: Text('Deadline'),
+                      title: const Text('Deadline'),
                       subtitle: Text(widget.jobpost.lastdate),
                     ),
                     ListTile(
-                      title: Text('Job Description'),
+                      title: const Text('Job Description'),
                       subtitle: Text(widget.jobpost.desc),
                     ),
 
@@ -78,8 +78,9 @@ class _JsSingleJobPostState extends State<JsSingleJobPost> {
                     //button
                     MaterialButton(
                       onPressed: () {
-                        if(!appliedForJob)
-                        _applyForJob();
+                        if(!appliedForJob) {
+                          _applyForJob();
+                        }
                       },
                       color: !appliedForJob? Theme.of(context).primaryColor : Colors.red,
                       child: Padding(

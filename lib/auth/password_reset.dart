@@ -37,7 +37,7 @@ class _PasswordResetState extends State<PasswordReset> {
       appBar: AppBar(),
       body: isloading
           ? _buildLoadingLayout()
-          : Container(
+          : SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -58,11 +58,11 @@ class _PasswordResetState extends State<PasswordReset> {
   }
 
   Widget _buildLoadingLayout() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Center(
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       ),
     );
   }
@@ -80,7 +80,7 @@ class _PasswordResetState extends State<PasswordReset> {
         rwidg = _buildThirdLayout(context);
         break;
       default:
-        rwidg = Text('Restart App');
+        rwidg = const Text('Restart App');
         break;
     }
     return rwidg;
@@ -366,7 +366,7 @@ class _PasswordResetState extends State<PasswordReset> {
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SplashScreen()),
+            MaterialPageRoute(builder: (context) => const SplashScreen()),
           );
         } else {
           //show snackbar

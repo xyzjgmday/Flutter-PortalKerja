@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,6 +12,8 @@ import '../widgets/loading.dart';
 import 'em_profile.dart';
 
 class EmProfileEdit extends StatefulWidget {
+  const EmProfileEdit({Key? key}) : super(key: key);
+
   @override
   _EmProfileEditState createState() => _EmProfileEditState();
 }
@@ -40,7 +45,7 @@ class _EmProfileEditState extends State<EmProfileEdit> {
     return Scaffold(
       appBar: AppBar(),
       body: isloading
-          ? LoadingLayout()
+          ? const LoadingLayout()
           : ListView(
               children: <Widget>[
                 //
@@ -53,11 +58,11 @@ class _EmProfileEditState extends State<EmProfileEdit> {
                         controller: nameController,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color(0xffedeef3),
+                          fillColor: const Color(0xffedeef3),
                           hintText: 'Company Name',
                           labelText: 'Company Name',
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: const BorderSide(color: Colors.transparent),
                               borderRadius: BorderRadius.circular(20.0)),
                           focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
@@ -289,9 +294,12 @@ class _EmProfileEditState extends State<EmProfileEdit> {
         Navigator.of(context).popUntil((_) => count++ >= 2);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => EmProfile()),
+          MaterialPageRoute(builder: (context) => const EmProfile()),
         );
       }
     }
   }
+}
+
+class Padding {
 }

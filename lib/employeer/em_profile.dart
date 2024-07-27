@@ -8,100 +8,124 @@ import 'em_profile_edit.dart';
 import '../widgets/loading.dart';
 
 class EmProfile extends StatefulWidget {
+  const EmProfile({Key? key}) : super(key: key);
+
   @override
   _EmProfileState createState() => _EmProfileState();
 }
 
 class _EmProfileState extends State<EmProfile> {
   //variables
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final Color fieldColor = Color(0xffedeef3);
   List profiledata = [];
   bool isloading = false;
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Company Profile'),
+        title: const Text('Company Profile'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(
-                Icons.edit,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EmProfileEdit()),
-                );
-              }),
+            icon: const Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EmProfileEdit()),
+              );
+            },
+          ),
         ],
       ),
       body: isloading
-          ? LoadingLayout()
-          : profiledata.length == 0
-              ? Text('OOPS!')
-              : SingleChildScrollView(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        //company Email
-                        ListTile(
-                          title: Text('Company Email'),
-                          subtitle: profiledata[0]["email"] != null
-                              ? Text(profiledata[0]["email"])
-                              : Text('-'),
+          ? const LoadingLayout()
+          : profiledata.isEmpty
+              ? Center(child: const Text('OOPS!'))
+              : Stack(
+                  children: <Widget>[
+                    // Background gradient
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.blueAccent, Colors.deepPurpleAccent],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                         ),
-
-                        //company name
-                        ListTile(
-                          title: Text('Company Name'),
-                          subtitle: profiledata[0]["company_name"] != null
-                              ? Text(profiledata[0]["company_name"])
-                              : Text('-'),
-                        ),
-                        //company Phone
-                        ListTile(
-                          title: Text('Company Phone'),
-                          subtitle: profiledata[0]["company_phone"] != null
-                              ? Text(profiledata[0]["company_phone"])
-                              : Text('-'),
-                        ),
-
-                        //company Address
-                        ListTile(
-                          title: Text('Company Address'),
-                          subtitle: profiledata[0]["company_address"] != null
-                              ? Text(profiledata[0]["company_address"])
-                              : Text('-'),
-                        ),
-                        //company Map
-                        ListTile(
-                          title: Text('Company Map Data'),
-                          subtitle: profiledata[0]["email"] != null
-                              ? Text(
-                                  'lat : ${profiledata[0]["lat"]} , long : ${profiledata[0]["long"]}')
-                              : Text('-'),
-                        ),
-
-                        //About Company
-                        ListTile(
-                            title: Text('About Company'),
-                            subtitle: profiledata[0]["company_desc"] != null
-                                ? Text(
-                                    profiledata[0]["company_desc"],
-                                    textAlign: TextAlign.justify,
-                                  )
-                                : Text('-')),
-                      ],
+                      ),
                     ),
-                  ),
+                    // Overlay with gradient
+                    Positioned.fill(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.transparent, Colors.black54],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Main content
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.all(16.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            //company Email
+                            ListTile(
+                              title: Text('Company Email', style: TextStyle(color: Colors.white)),
+                              subtitle: profiledata[0]["email"] != null
+                                  ? Text(profiledata[0]["email"], style: TextStyle(color: Colors.white70))
+                                  : Text('-', style: TextStyle(color: Colors.white70)),
+                            ),
+                            //company name
+                            ListTile(
+                              title: Text('Company Name', style: TextStyle(color: Colors.white)),
+                              subtitle: profiledata[0]["company_name"] != null
+                                  ? Text(profiledata[0]["company_name"], style: TextStyle(color: Colors.white70))
+                                  : Text('-', style: TextStyle(color: Colors.white70)),
+                            ),
+                            //company Phone
+                            ListTile(
+                              title: Text('Company Phone', style: TextStyle(color: Colors.white)),
+                              subtitle: profiledata[0]["company_phone"] != null
+                                  ? Text(profiledata[0]["company_phone"], style: TextStyle(color: Colors.white70))
+                                  : Text('-', style: TextStyle(color: Colors.white70)),
+                            ),
+                            //company Address
+                            ListTile(
+                              title: Text('Company Address', style: TextStyle(color: Colors.white)),
+                              subtitle: profiledata[0]["company_address"] != null
+                                  ? Text(profiledata[0]["company_address"], style: TextStyle(color: Colors.white70))
+                                  : Text('-', style: TextStyle(color: Colors.white70)),
+                            ),
+                            //company Map
+                            ListTile(
+                              title: Text('Company Map Data', style: TextStyle(color: Colors.white)),
+                              subtitle: profiledata[0]["lat"] != null && profiledata[0]["long"] != null
+                                  ? Text('lat: ${profiledata[0]["lat"]}, long: ${profiledata[0]["long"]}', style: TextStyle(color: Colors.white70))
+                                  : Text('-', style: TextStyle(color: Colors.white70)),
+                            ),
+                            //About Company
+                            ListTile(
+                              title: Text('About Company', style: TextStyle(color: Colors.white)),
+                              subtitle: profiledata[0]["company_desc"] != null
+                                  ? Text(profiledata[0]["company_desc"], style: TextStyle(color: Colors.white70), textAlign: TextAlign.justify)
+                                  : Text('-', style: TextStyle(color: Colors.white70)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
     );
   }
@@ -110,7 +134,7 @@ class _EmProfileState extends State<EmProfile> {
   void initState() {
     _fetchProfileData();
     super.initState();
-  } 
+  }
 
   Future<void> _fetchProfileData() async {
     setState(() {
